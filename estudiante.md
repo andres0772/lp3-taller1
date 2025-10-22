@@ -84,7 +84,7 @@ curl http://127.0.0.1:5000/api/videos/1
 
 **En navegador:** Navega a `http://127.0.0.1:5000/api/videos/1` (funciona para GET).
 
-Respuesta:
+Respuesta de ejemplo:
 ```json
 {
   "id": 1,
@@ -103,7 +103,7 @@ curl -X PUT http://127.0.0.1:5000/api/videos/1 \
 -d '{"name":"Tutorial de Flask","views":0,"likes":0}'
 ```
 
-Respuesta:
+Respuesta de ejemplo:
 ```json
 {
   "id": 1,
@@ -122,7 +122,7 @@ curl -X PATCH http://127.0.0.1:5000/api/videos/1 \
 -d '{"views":2500,"likes":200}'
 ```
 
-Respuesta:
+Respuesta de ejemplo:
 ```json
 {
   "id": 1,
@@ -140,7 +140,7 @@ curl -X DELETE http://127.0.0.1:5000/api/videos/1
 ```
 
 
-Respuesta: 204 No Content (vacío).
+Respuesta de ejemplo: 204 No Content (vacío).
 
 ## Desarrollo del Taller
 
@@ -191,3 +191,16 @@ Respuesta: 204 No Content (vacío).
 8. **Despliegue**:
    - Dockerizar la aplicación
    - Configurar para entornos de producción
+
+## Implementación de Sugerencia 2: Documentación
+
+Se implementó la integración de Swagger/OpenAPI para documentar la API y añadir ejemplos de uso. Esto permite una interfaz interactiva para probar endpoints.
+
+### Cambios Realizados
+- Cambie Flask-RESTful por Flask-RESTX en `app.py` y `resources/video.py`.
+- Agregue un namespace en `resources/video.py` para agrupar endpoints.
+- Documente cada endpoint con `@api.doc`, incluyendo parámetros, respuestas y modelos de datos.
+
+### Ejemplos de Uso
+- Ve a `http://127.0.0.1:5000` para ver Swagger UI.
+- En PATCH /api/videos/{id}: Agrega JSON como `{"name": "Nuevo Video", "views": 100, "likes": 50}` y haz "Try it out" para actualizar.
