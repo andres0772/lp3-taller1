@@ -59,7 +59,6 @@ class Video(Resource):
         Returns:
             VideoModel: El video solicitado
         """
-        # TODO
         video = abort_if_video_doesnt_exist(video_id)
         return video
     
@@ -74,12 +73,11 @@ class Video(Resource):
         Returns:
             VideoModel: El video creado
         """
-        # TODO
         args = video_put_args.parse_args()
         video = VideoModel(id=video_id, name=args['name'], views=args['views'], likes=args['likes'])
         db.session.add(video)
         db.session.commit()
-        return video, 201
+        return video
     
     @marshal_with(resource_fields)
     def patch(self, video_id):
@@ -92,8 +90,18 @@ class Video(Resource):
         Returns:
             VideoModel: El video actualizado
         """
-        # TODO
-        pass
+        args = video_update_args.parse_args()
+        video = abort_if_video_doesnt_exist(video_id)
+        if args['name'] is not None:
+            video.name = args['name']
+        if args['views'] is not None:
+            video.views = args['views']
+        if args['likes'] is not None:
+            video.likes = args['likes']
+        db.session.commit()
+        return video
+        
+
     
     def delete(self, video_id):
         """
@@ -105,6 +113,7 @@ class Video(Resource):
         Returns:
             str: Mensaje vacío con código 204
         """
-        # TODO
-        pass
-
+        video = abort_if_video_doesnt_exist(video_id)
+        db.session.delete(video)
+        db.session.commit()
+        return '', 204
