@@ -1,9 +1,22 @@
 """
 Recursos y rutas para la API de videos
 """
-from flask_restful import Resource, reqparse, abort, fields, marshal_with
+from ast import Param
+from typing_extensions import ReadOnly
+from flask_restx import Namespace, Resource, reqparse, abort, fields, marshal_with #se cambia a restx y se agrega Namespace
 from models.video import VideoModel
 from models import db
+
+#se crea un Namespace para que se documente el swagger
+api = Namespace ('videos', description='Operaciones para los videos')
+
+#definir el modelo de los videos
+video_model = api.model('Video', {
+    'id': fields.Integer(readonly=True, description='ID del video'),
+    'name': fields.String(required=True, description='Nombre del video'),
+    'views': fields.Integer(required=True, description='Número de vistas'),
+    'likes': fields.Integer(required=True, description='Número de likes')
+})
 
 # Campos para serializar respuestas
 resource_fields = {
@@ -34,7 +47,7 @@ def abort_if_video_doesnt_exist(video_id):
     """
     video = VideoModel.query.filter_by(id=video_id).first()
     if not video:
-        abort(404, message=f"No se encontró un video con el ID {video_id}")
+        abort(404, message=f"No se encontró un video con este ID: {video_id}")
     return video
 
 class Video(Resource):
@@ -47,7 +60,7 @@ class Video(Resource):
         patch: Actualizar un video existente
         delete: Eliminar un video
     """
-    
+    @api.doc(params={'video_id': 'ID del video'}, responses={200: 'video encontrado', 404: 'video no encontrado'}) #se crea una api de documento que tendra el siguiente parametro, tendria el id del video y la respuesta es si esta dara un 200 si no dara un 404.
     @marshal_with(resource_fields)
     def get(self, video_id):
         """
@@ -61,7 +74,8 @@ class Video(Resource):
         """
         video = abort_if_video_doesnt_exist(video_id)
         return video
-    
+
+    @api.doc(responses={200: 'Video creado', 400: 'Datos inválidos'}, body=video_model) #se crea otra api doc donde va a responder lo siguiente, si el video se creo dara una respuesta 200, si en caso no dara una respuesta 400.
     @marshal_with(resource_fields)
     def put(self, video_id):
         """
@@ -79,6 +93,7 @@ class Video(Resource):
         db.session.commit()
         return video
     
+    @api.doc(responses={200: 'Video actualizado', 404: 'Video no encontrado'}, body=video_model)#se crea otro decorador que respondera lo siguiente, si el video se creo dara una respuesta 200 si no dara 404.
     @marshal_with(resource_fields)
     def patch(self, video_id):
         """
@@ -102,7 +117,7 @@ class Video(Resource):
         return video
         
 
-    
+    @api.doc(responses={204: 'Video eliminado', 404: 'Video no encontrado'})#se crea otro decorador que respondera lo siguiente, si el video se creo dara una respuesta 204 si no dara 404.
     def delete(self, video_id):
         """
         Elimina un video existente
@@ -117,3 +132,5 @@ class Video(Resource):
         db.session.delete(video)
         db.session.commit()
         return '', 204
+
+api.add_resource(Video, '/<int:video_id>')
