@@ -5,13 +5,13 @@ Configuración de la aplicación Flask
 # Configuración para el entorno de desarrollo
 class DevelopmentConfig:
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////home/cross/trabajos/lp3-taller1/database.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Configuración para el entorno de producción
 class ProductionConfig:
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'  # En producción se recomendaría usar una BD más robusta
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////home/cross/trabajos/lp3-taller1/database.db'  # En producción se recomendaría usar una BD más robusta
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Configuración para pruebas
