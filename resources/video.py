@@ -60,7 +60,8 @@ class Video(Resource):
             VideoModel: El video solicitado
         """
         # TODO
-        pass
+        video = abort_if_video_doesnt_exist(video_id)
+        return video
     
     @marshal_with(resource_fields)
     def put(self, video_id):
@@ -74,7 +75,11 @@ class Video(Resource):
             VideoModel: El video creado
         """
         # TODO
-        pass
+        args = video_put_args.parse_args()
+        video = VideoModel(id=video_id, name=args['name'], views=args['views'], likes=args['likes'])
+        db.session.add(video)
+        db.session.commit()
+        return video, 201
     
     @marshal_with(resource_fields)
     def patch(self, video_id):
