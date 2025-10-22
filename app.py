@@ -3,7 +3,7 @@ Archivo principal de la aplicación Flask
 """
 import os
 from flask import Flask
-from flask_restful import Api
+from flask_restx import Api #importamos esto para la documentacion swagger
 from models import db
 from resources.video import Video
 from config import config
@@ -26,7 +26,7 @@ def create_app(config_name='default'):
     
     # Inicializar extensiones
     db.init_app(app)
-    api = Api(app)
+    api = Api(app, version='1.0', title='API de videos', description='API para gestionar videos')# se agrega un titulo, descripcion y version
     
     # Registrar rutas
     api.add_resource(Video, "/api/videos/<int:video_id>")
