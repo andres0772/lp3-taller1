@@ -5,7 +5,7 @@ import os
 from flask import Flask
 from flask_restx import Api #importamos esto para la documentacion swagger
 from models import db
-from resources.video import Video
+from resources.video import api as video_ns
 from config import config
 
 def create_app(config_name='default'):
@@ -29,7 +29,7 @@ def create_app(config_name='default'):
     api = Api(app, version='1.0', title='API de videos', description='API para gestionar videos')# se agrega un titulo, descripcion y version
     
     # Registrar rutas
-    api.add_resource(Video, "/api/videos/<int:video_id>")
+    api.add_namespace(video_ns, path='/api/videos')
     
     return app
 
