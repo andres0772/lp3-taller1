@@ -69,7 +69,7 @@ lp3-taller1
    python app.py
    ```
    al iniciar el proyecto se creara una carpeta llamada instance, mover el archivo database.db para que encuenta la base de datos
-   ```
+   
 
 3. El servidor estará disponible en `http://localhost:5000`
 
