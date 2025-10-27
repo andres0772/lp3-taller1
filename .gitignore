@@ -1,6 +1,4 @@
 ### Flask ###
-instance/*
-!instance/.gitignore
 .webassets-cache
 .env
 
@@ -69,7 +67,6 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
 
 # Scrapy stuff:
 .scrapy
